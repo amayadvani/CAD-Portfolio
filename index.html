@@ -1,2 +1,268 @@
-<title>CAD Portfolio</title>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Amay Advani's CAD Portfolio</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
+        body {
+            background-color: #000000;
+            color: #E0F6FF;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            font-weight: 300;
+            color: #87CEEB;
+            margin-bottom: 10px;
+            letter-spacing: 1px;
+        }
+
+        header p {
+            font-size: 1.1rem;
+            color: #87CEEB;
+            font-weight: 300;
+        }
+
+        #grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            width: 100%;
+            justify-items: center;
+        }
+
+        .cad-item {
+            background: linear-gradient(145deg, #111111, #1a1a1a);
+            border: 1px solid #333333;
+            border-radius: 12px;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            width: 100%;
+            max-width: 280px;
+        }
+
+        .cad-item:hover {
+            transform: translateY(-8px);
+            border-color: #87CEEB;
+            box-shadow: 0 8px 25px rgba(135, 206, 235, 0.2);
+        }
+
+        .cad-item img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            background: #222222;
+        }
+
+        .cad-item h3 {
+            color: #87CEEB;
+            font-size: 1.2rem;
+            font-weight: 400;
+            margin-bottom: 8px;
+        }
+
+        .cad-item p {
+            color: #87CEEB;
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+
+        /* Modal Styles */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: rgba(0, 0, 0, 0.95);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.hidden {
+            display: none;
+        }
+
+        #modal-content {
+            position: relative;
+            width: 90vw;
+            height: 90vh;
+            background: #111111;
+            border-radius: 12px;
+            border: 1px solid #333333;
+            overflow: hidden;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: none;
+            border: none;
+            color: #87CEEB;
+            font-size: 2rem;
+            cursor: pointer;
+            z-index: 1001;
+            padding: 5px;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+
+        .close-btn:hover {
+            background: rgba(135, 206, 235, 0.2);
+            transform: scale(1.1);
+        }
+
+        #viewer-container {
+            width: 100%;
+            height: 80%;
+            background: #000000;
+        }
+
+        #model-info {
+            padding: 20px;
+            text-align: center;
+            background: #111111;
+            height: 20%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        #model-info h2 {
+            color: #87CEEB;
+            font-size: 1.5rem;
+            font-weight: 300;
+            margin-bottom: 8px;
+        }
+
+        #model-info p {
+            color: #87CEEB;
+            font-size: 1rem;
+        }
+
+        /* Loading Styles */
+        #loading {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            z-index: 1002;
+            background: rgba(0, 0, 0, 0.9);
+            padding: 30px;
+            border-radius: 12px;
+            border: 1px solid #333333;
+        }
+
+        #loading.hidden {
+            display: none;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid #333333;
+            border-top: 3px solid #87CEEB;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 15px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        #loading p {
+            color: #87CEEB;
+            font-size: 1rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2rem;
+            }
+            
+            #grid-container {
+                grid-template-columns: 1fr;
+                gap: 20px;
+                padding: 0 10px;
+            }
+            
+            #modal-content {
+                width: 95vw;
+                height: 95vh;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Amay Advani's CAD Portfolio</h1>
+        <p>Interactive 3D Models</p>
+    </header>
+
+    <main id="grid-container">
+        <!-- CAD items will be dynamically generated here by main.js -->
+    </main>
+
+    <div id="modal" class="modal hidden">
+        <div id="modal-content">
+            <button id="close-btn" class="close-btn">&times;</button>
+            <div id="viewer-container"></div>
+            <div id="model-info">
+                <h2 id="model-name"></h2>
+                <p id="model-description"></p>
+            </div>
+        </div>
+    </div>
+
+    <div id="loading" class="hidden">
+        <div class="spinner"></div>
+        <p>Loading 3D Model...</p>
+    </div>
+
+    <!-- Three.js first (everything depends on this) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+    <!-- STL Loader (needs Three.js to exist first) -->
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/STLLoader.js"></script>
+
+    <!-- Orbit Controls (for mouse interaction) -->
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+
+    <!-- Your files last (need all libraries loaded first) -->
+    <script src="cadData.js"></script>
+    <script src="cadViewer.js"></script>
+    <script src="main.js"></script>
+</body>
+</html>
