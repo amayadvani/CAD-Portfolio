@@ -1,120 +1,44 @@
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('CAD Portfolio loaded!');
-    
-    // Initialize the portfolio
     createGrid();
-    setupModalHandlers();
 });
 
-// Create the grid of CAD models
 function createGrid() {
     const container = document.getElementById('grid-container');
-    
-    // Clear existing content
     container.innerHTML = '';
-    
-    // Create grid items from cadModels array
+
     cadModels.forEach(model => {
-        const item = document.createElement('div');
-        item.className = 'cad-item';
-        item.innerHTML = `
-            <img src="${model.thumbnail}" alt="${model.name}" loading="lazy">
-            <h3>${model.name}</h3>
-            <p>${model.description}</p>
-        `;
-        
-        // Add click handler to open 3D viewer
-        item.addEventListener('click', () => openModel(model));
-        
-        // Add to grid
-        container.appendChild(item);
-    });
-    
-    console.log(`Created grid with ${cadModels.length} CAD models`);
-}
+        const card = document.createElement('div');
+        card.className = 'cad-card';
 
-// Open a model in the 3D viewer
-function openModel(model) {
-    console.log('Opening model:', model.name);
-    
-    // Show modal
-    const modal = document.getElementById('modal');
-    modal.classList.remove('hidden');
-    
-    // Update model info
-    document.getElementById('model-name').textContent = model.name;
-    document.getElementById('model-description').textContent = model.description;
-    
-    // Show loading indicator
-    showLoading();
-    
-    // Clear previous viewer
-    const viewerContainer = document.getElementById('viewer-container');
-    viewerContainer.innerHTML = '';
-    
-    // Initialize 3D viewer
-    try {
-        const viewer = new CADViewer(viewerContainer);
-        viewer.loadModel(model.modelPath, () => {
-            hideLoading();
+        // Viewer wrapper with iframe
+        const viewerWrapper = document.createElement('div');
+        viewerWrapper.className = 'viewer-wrapper';
+
+        const iframe = document.createElement('iframe');
+        iframe.src = model.embedUrl;
+        iframe.title = model.name;
+        iframe.allow = 'fullscreen';
+        iframe.setAttribute('allowfullscreen', '');
+        viewerWrapper.appendChild(iframe);
+
+        // Drag hint tooltip
+        const hint = document.createElement('div');
+        hint.className = 'drag-hint';
+        hint.textContent = 'Click & drag to rotate';
+        viewerWrapper.appendChild(hint);
+
+        // Hide hint once user starts interacting
+        iframe.addEventListener('load', () => {
+            setTimeout(() => { hint.style.opacity = '0'; }, 4000);
         });
-    } catch (error) {
-        console.error('Error creating viewer:', error);
-        hideLoading();
-        alert('Error loading 3D model. Please try again.');
-    }
-}
 
-// Set up modal event handlers
-function setupModalHandlers() {
-    // Close button
-    const closeBtn = document.getElementById('close-btn');
-    closeBtn.addEventListener('click', closeModal);
-    
-    // Close when clicking outside modal content
-    const modal = document.getElementById('modal');
-    modal.addEventListener('click', (e) => {
-        if (e.target === modal) {
-            closeModal();
-        }
-    });
-    
-    // Close with Escape key
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape') {
-            closeModal();
-        }
+        // Card info section
+        const info = document.createElement('div');
+        info.className = 'card-info';
+        info.innerHTML = `<h3>${model.name}</h3><p>${model.description}</p>`;
+
+        card.appendChild(viewerWrapper);
+        card.appendChild(info);
+        container.appendChild(card);
     });
 }
-
-// Close the modal
-function closeModal() {
-    const modal = document.getElementById('modal');
-    modal.classList.add('hidden');
-    
-    // Clean up 3D viewer to free memory
-    const viewerContainer = document.getElementById('viewer-container');
-    viewerContainer.innerHTML = '';
-    
-    hideLoading();
-}
-
-// Show loading indicator
-function showLoading() {
-    document.getElementById('loading').classList.remove('hidden');
-}
-
-// Hide loading indicator
-function hideLoading() {
-    document.getElementById('loading').classList.add('hidden');
-}
-
-// Handle window resize
-window.addEventListener('resize', () => {
-    // If modal is open, resize the 3D viewer
-    const modal = document.getElementById('modal');
-    if (!modal.classList.contains('hidden')) {
-        // Trigger resize event for 3D viewer
-        window.dispatchEvent(new Event('viewerResize'));
-    }
-});
