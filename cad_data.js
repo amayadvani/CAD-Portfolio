@@ -1,36 +1,28 @@
+// CAD Portfolio Data
+// HOW TO ADD YOUR ONSHAPE MODELS:
+// 1. Open your model in Onshape
+// 2. Click Share (top right) -> Copy embed link
+// 3. Replace the embedUrl below with your copied URL
+// 4. Update the name and description fields
+
 const cadModels = [
     {
         id: 1,
-        name: "Sample Part 1",
-        thumbnail: "https://via.placeholder.com/300x200/333333/87CEEB?text=CAD+Model+1", // Placeholder for now
-        modelPath: "models/sample1.stl", // Will point to your STL file
-        description: "Complex mechanical component with precision tolerances"
+        name: "Design 1",
+        // REPLACE THIS URL with your Onshape embed link:
+        embedUrl: "https://cad.onshape.com/embed/dde9038862bc490892b78e12?background=ffffff&drawingBackground=ffffff&rotatable=true",
+        description: "Add a description for this design"
     },
     {
         id: 2,
-        name: "Sample Part 2", 
-        thumbnail: "https://via.placeholder.com/300x200/333333/87CEEB?text=CAD+Model+2", // Placeholder for now
-        modelPath: "models/sample2.stl", // Will point to your STL file
-        description: "Lightweight design optimized for manufacturing"
+        name: "Design 2",
+        embedUrl: "https://cad.onshape.com/embed/dde9038862bc490892b78e12?background=ffffff&drawingBackground=ffffff&rotatable=true",
+        description: "Add a description for this design"
     },
     {
         id: 3,
-        name: "Sample Part 3",
-        thumbnail: "https://via.placeholder.com/300x200/333333/87CEEB?text=CAD+Model+3", // Placeholder for now
-        modelPath: "models/sample3.stl", // Will point to your STL file
-        description: "Innovative housing design with integrated cooling"
+        name: "Design 3",
+        embedUrl: "https://cad.onshape.com/embed/dde9038862bc490892b78e12?background=ffffff&drawingBackground=ffffff&rotatable=true",
+        description: "Add a description for this design"
     }
 ];
-
-// Make available to other files
-if (typeof window !== 'undefined') {
-    window.cadModels = cadModels;
-}
-
-    // {
-    //     id: 4,
-    //     name: "Your Model Name",
-    //     thumbnail: "thumbnails/your-model.jpg",
-    //     modelPath: "models/your-model.stl", 
-    //     description: "Description of your model"
-    // }
