@@ -129,6 +129,7 @@ class CADViewer {
         
         // Create STL loader
         const loader = new THREE.STLLoader();
+        loader.setCrossOrigin('anonymous');
         
         // Load the model
         loader.load(
