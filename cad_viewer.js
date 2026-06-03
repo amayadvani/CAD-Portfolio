@@ -1,5 +1,5 @@
-// 3D CAD Viewer using Three.js - V6.5
-// Fixed: Use new THREE.STLLoader() instance for proper binary STL parsing
+// 3D CAD Viewer using Three.js - V7
+// Fixed: Use STLLoader.load() callback pattern for reliable STL loading
 // Features: per-model random colors, center-focused rotation, smart zoom, proper shading
 
 class CADViewer {
@@ -31,7 +31,7 @@ class CADViewer {
         this.setupControls();
         this.setupResize();
         this.animate();
-        console.log('CAD Viewer V6.5 initialized');
+        console.log('CAD Viewer V7 initialized');
     }
 
     setupLighting() {
@@ -80,28 +80,31 @@ class CADViewer {
         this.renderer.setSize(w, h);
     }
 
-    async loadModel(modelPath, onComplete) {
+    loadModel(modelPath, onComplete) {
         console.log('Loading model:', modelPath);
         if (this.currentModel) {
             this.scene.remove(this.currentModel);
             this.currentModel = null;
         }
-        try {
-            const response = await fetch(modelPath);
-            if (!response.ok) {
-                throw new Error('HTTP ' + response.status + ': ' + response.statusText);
+        const loader = new THREE.STLLoader();
+        const self = this;
+        loader.load(
+            modelPath,
+            function (geometry) {
+                console.log('STL loaded via loader.load()');
+                console.log('Vertices:', geometry.attributes.position.count);
+                self.displayModel(geometry);
+                if (onComplete) onComplete();
+            },
+            function (xhr) {
+                console.log('Loading progress:', Math.round((xhr.loaded / xhr.total) * 100) + '%');
+            },
+            function (error) {
+                console.error('Failed to load model:', modelPath, error);
+                self.showErrorPlaceholder();
+                if (onComplete) onComplete();
             }
-            const buffer = await response.arrayBuffer();
-            console.log('STL loaded, size:', buffer.byteLength, 'bytes');
-            const loader = new THREE.STLLoader();
-            const geometry = loader.parse(buffer);
-            console.log('Parsed STL:', geometry.attributes.position.count, 'vertices');
-            this.displayModel(geometry);
-        } catch (error) {
-            console.error('Failed to load model:', modelPath, error);
-            this.showErrorPlaceholder();
-        }
-        if (onComplete) onComplete();
+        );
     }
 
     displayModel(geometry) {
