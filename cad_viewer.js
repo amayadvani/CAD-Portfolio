@@ -195,3 +195,7 @@ class CADViewer {
         if (this.controls) this.controls.dispose();
     }
 }
+
+// Expose CADViewer to global scope for main.js (ES Module)
+window.CADViewer = CADViewer;
+window.THREE = THREE;
