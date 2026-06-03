@@ -76,3 +76,7 @@ const cadModels = [
     description: "A lazy susan mechanism redesigned for linear translation applications."
   }
 ];
+
+
+// Expose to global scope for main.js (ES Module)
+window.cadModels = cadModels;
