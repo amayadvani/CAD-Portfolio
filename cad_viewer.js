@@ -1,5 +1,5 @@
-// 3D CAD Viewer using Three.js - V2
-// Features: per-model random colors, center-focused rotation, smart zoom, proper shading
+// 3D CAD Viewer using Three.js - V3
+// Fixed: STL loading, per-model colors, center-focused rotation, smart zoom, proper shading
 
 class CADViewer {
     constructor(container, colorSeed = null) {
@@ -38,14 +38,19 @@ class CADViewer {
 
         // Setup lighting
         this.setupLighting();
+
         // Setup controls
         this.setupControls();
+
         // Setup resize handler
         this.setupResize();
+
         // Start render loop
         this.animate();
-        console.log('CAD Viewer initialized');
+
+        console.log('CAD Viewer V3 initialized');
     }
+
     // Setup lighting for the scene
     setupLighting() {
         // Ambient light for general illumination
@@ -78,6 +83,7 @@ class CADViewer {
     // Setup mouse controls - center-focused rotation
     setupControls() {
         this.controls = new THREE.OrbitControls(this.camera, this.renderer.domElement);
+
         // Configure controls for smooth, center-focused operation
         this.controls.enableDamping = true;
         this.controls.dampingFactor = 0.05;
@@ -85,13 +91,16 @@ class CADViewer {
         this.controls.enablePan = false; // Disable panning to keep model centered
         this.controls.enableRotate = true;
         this.controls.autoRotate = false;
+
         // Set initial zoom limits (will be refined per model)
         this.controls.maxDistance = 50;
         this.controls.minDistance = 1;
         this.controls.maxPolarAngle = Math.PI;
         this.controls.minPolarAngle = 0;
+
         // Rotate around model center
         this.controls.target.set(0, 0, 0);
+
         console.log('Controls setup complete - center-focused rotation enabled');
     }
 
@@ -114,37 +123,58 @@ class CADViewer {
         this.renderer.setSize(width, height);
         console.log('Viewer resized to ' + width + 'x' + height);
     }
-    // Load and display a 3D model
+
+    // Load and display a 3D model - FIXED version
     loadModel(modelPath, onComplete) {
-        console.log('Loading model:', modelPath);
+        console.log('Loading model from path:', modelPath);
+
         // Remove existing model
         if (this.currentModel) {
             this.scene.remove(this.currentModel);
             this.currentModel = null;
         }
 
-        // Create STL loader
+        // Create STL loader - use the built-in STLLoader from global THREE
         const loader = new THREE.STLLoader();
 
-        // Load the model
+        // Load the model with proper cross-origin settings
         loader.load(
             modelPath,
+            // Success callback
             (geometry) => {
-                console.log('Model loaded successfully');
+                console.log('Model loaded successfully!');
                 console.log('Geometry has', geometry.attributes.position.count, 'vertices');
                 this.displayModel(geometry);
                 if (onComplete) onComplete();
             },
+            // Progress callback
             (progress) => {
-                console.log('Loading progress:', Math.round((progress.loaded / progress.total) * 100) + '%');
+                if (progress.total > 0) {
+                    console.log('Loading progress:', Math.round((progress.loaded / progress.total) * 100) + '%');
+                }
             },
+            // Error callback - FIXED: more detailed error logging
             (error) => {
-                console.error('Error loading model:', error);
+                console.error('Error loading model from', modelPath);
+                console.error('Error details:', error);
+                // Try to fetch the file to verify it exists
+                fetch(modelPath)
+                    .then(response => {
+                        console.log('Fetch status:', response.status, response.statusText);
+                        return response.headers.get('content-type');
+                    })
+                    .then(contentType => {
+                        console.log('Content-Type:', contentType);
+                    })
+                    .catch(fetchErr => {
+                        console.error('Could not fetch file:', fetchErr);
+                    });
                 this.showErrorPlaceholder();
                 if (onComplete) onComplete();
             }
         );
     }
+
     // Display the loaded model with per-model random color
     displayModel(geometry) {
         // Generate a unique, pleasing color for this model based on its geometry
@@ -185,8 +215,10 @@ class CADViewer {
 
         // Fit camera to model with proper centering
         this.fitCameraToModel();
+
         console.log('Model displayed with color #' + modelColor.getHexString());
     }
+
     // Generate a pleasing random color for each model
     // Uses a seeded approach so the same viewer instance always gets the same color
     getModelColor() {
@@ -206,22 +238,18 @@ class CADViewer {
             0x7f8c8d  // Gray
         ];
 
-        // Use the colorSeed if provided, otherwise use a hash of the model bounds
-        // to get a deterministic but varied color across model instances
         let index = 0;
         if (this.colorSeed !== null) {
-            // If a seed was passed to the constructor, use it
             index = this.colorSeed % palette.length;
         } else if (this.modelBounds) {
-            // Use model bounds to create a semi-deterministic index
             index = Math.floor(this.modelBounds * 17) % palette.length;
         } else {
-            // Fallback: random index
             index = Math.floor(Math.random() * palette.length);
         }
 
         return palette[index];
     }
+
     // Fit camera to frame the model properly, centered on model center
     fitCameraToModel() {
         if (!this.currentModel || !this.modelBounds) return;
@@ -230,9 +258,8 @@ class CADViewer {
         this.controls.target.set(0, 0, 0);
 
         // Calculate optimal camera distance based on model size
-        // FOV is 75 degrees, so we need distance to fit the model in the view
         const fov = this.camera.fov * (Math.PI / 180);
-        const scale = this.modelBounds / 4; // model is scaled to target size of 4
+        const scale = this.modelBounds / 4;
         const distance = (scale * 2) / (2 * Math.tan(fov / 2)) * 1.5;
 
         // Position camera at appropriate distance
@@ -245,33 +272,35 @@ class CADViewer {
 
         // Update controls
         this.controls.update();
+
         console.log('Camera fitted to model at distance ' + distance.toFixed(2));
     }
 
     // Show error placeholder when model fails to load
     showErrorPlaceholder() {
-        // Remove any existing model first
         if (this.currentModel) {
             this.scene.remove(this.currentModel);
         }
 
         // Create a warning cube
         const geometry = new THREE.BoxGeometry(2, 2, 2);
-        const material = new THREE.MeshPhongMaterial({ color: 0xff6b6b, wireframe: true });
+        const material = new THREE.MeshPhongMaterial({
+            color: 0xff6b6b,
+            wireframe: true
+        });
         const cube = new THREE.Mesh(geometry, material);
         this.scene.add(cube);
         this.currentModel = cube;
+
         console.error('Error loading model - showing error placeholder');
     }
 
     // Animation loop
     animate() {
         requestAnimationFrame(() => this.animate());
-        // Update controls
         if (this.controls) {
             this.controls.update();
         }
-        // Render scene
         if (this.renderer && this.scene && this.camera) {
             this.renderer.render(this.scene, this.camera);
         }
