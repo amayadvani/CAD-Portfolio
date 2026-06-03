@@ -2,6 +2,14 @@
 // Fixed: Use STLLoader.load() callback pattern for reliable STL loading
 // Features: per-model random colors, center-focused rotation, smart zoom, proper shading
 
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { STLLoader } from 'three/addons/loaders/STLLoader.js';
+
+// Attach loaders to THREE namespace for backward compatibility
+THREE.OrbitControls = OrbitControls;
+THREE.STLLoader = STLLoader;
+
 class CADViewer {
     constructor(container, colorSeed = null) {
         this.container = container;
