@@ -262,14 +262,18 @@
 
     <div id="grid-container"></div>
 
-    <!-- Three.js from CDN -->
-    <script src="https://unpkg.com/three@0.160.0/build/three.min.js"></script>
-    <script src="https://unpkg.com/three@0.160.0/examples/js/controls/OrbitControls.js"></script>
-    <script src="https://unpkg.com/three@0.160.0/examples/js/loaders/STLLoader.js"></script>
+ <!-- Three.js + ES Module Shims for importmap support -->
+<script async src="https://unpkg.com/es-module-shims@1.8.2/dist/es-module-shims.js"></script>
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+    "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+  }
+}
+</script>
 
-    <!-- Portfolio scripts -->
-    <script src="cad_data.js"></script>
-    <script src="cad_viewer.js"></script>
-    <script src="main.js"></script>
-</body>
-</html>
+<!-- Portfolio scripts (ES Modules) -->
+<script src="cad_data.js" type="module"></script>
+<script src="cad_viewer.js" type="module"></script>
+<script src="main.js" type="module"></script>
