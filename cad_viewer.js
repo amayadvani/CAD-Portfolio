@@ -1,14 +1,8 @@
-// 3D CAD Viewer using Three.js - V7
-// Fixed: Use STLLoader.load() callback pattern for reliable STL loading
+// 3D CAD Viewer using Three.js - V7 (UMD fix)
+// Fixed: Use global THREE variable from script tag (UMD) for reliable loading on GitHub Pages
 // Features: per-model random colors, center-focused rotation, smart zoom, proper shading
 
-import * as THREE from 'three';
-import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
-import { STLLoader } from 'three/addons/loaders/STLLoader.js';
-
-// Attach loaders to THREE namespace for backward compatibility
-THREE.OrbitControls = OrbitControls;
-THREE.STLLoader = STLLoader;
+// THREE, OrbitControls, and STLLoader are loaded globally via script tags in index.html
 
 class CADViewer {
     constructor(container, colorSeed = null) {
@@ -195,7 +189,3 @@ class CADViewer {
         if (this.controls) this.controls.dispose();
     }
 }
-
-// Expose CADViewer to global scope for main.js (ES Module)
-window.CADViewer = CADViewer;
-window.THREE = THREE;
