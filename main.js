@@ -27,26 +27,13 @@ function createGrid() {
         card.appendChild(info);
         container.appendChild(card);
         console.log('Card created for:', model.name);
-        function showUnavailable() {
-            // Tear down the empty 3D canvas and gray out the card
-            try { if (viewer) viewer.dispose(); } catch (err) {}
-            viewerContainer.innerHTML = '';
-            card.classList.add('unavailable');
-            hint.style.display = 'none';
-            var msg = document.createElement('div');
-            msg.className = 'unavailable-overlay';
-            msg.innerHTML = '<span class="unavailable-icon">\u26A0</span><span>Model unavailable</span>';
-            viewerWrapper.appendChild(msg);
-        }
-        var viewer = null;
         try {
-            viewer = new CADViewer(viewerContainer, model.id);
+            var viewer = new CADViewer(viewerContainer, model.id);
             viewer.loadModel(model.stlPath, function() {
                 setTimeout(function() { hint.style.opacity = '0'; }, 4000);
-            }, showUnavailable);
+            });
         } catch (e) {
             console.error('Viewer error:', model.name, e);
-            showUnavailable();
         }
     });
     console.log('Total cards:', container.children.length);
