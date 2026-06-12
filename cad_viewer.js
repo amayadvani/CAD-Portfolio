@@ -37,22 +37,39 @@ class CADViewer {
     }
 
     setupLighting() {
-        const ambientLight = new THREE.AmbientLight(0xffffff, 0.7);
+        // Lower ambient + stronger directional = more dramatic, contrasty shading
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.45);
         this.scene.add(ambientLight);
-        const directionalLight = new THREE.DirectionalLight(0xffffff, 1.2);
-        directionalLight.position.set(10, 10, 5);
+        const directionalLight = new THREE.DirectionalLight(0xffffff, 1.8);
+        directionalLight.position.set(10, 14, 8);
         directionalLight.castShadow = true;
         directionalLight.shadow.mapSize.width = 2048;
         directionalLight.shadow.mapSize.height = 2048;
+        // Tighten the shadow camera so the cast shadow is crisp
+        directionalLight.shadow.camera.near = 0.5;
+        directionalLight.shadow.camera.far = 50;
+        directionalLight.shadow.camera.left = -10;
+        directionalLight.shadow.camera.right = 10;
+        directionalLight.shadow.camera.top = 10;
+        directionalLight.shadow.camera.bottom = -10;
+        directionalLight.shadow.bias = -0.0005;
         this.scene.add(directionalLight);
-        const fillLight = new THREE.DirectionalLight(0xffeebb, 0.5);
+        const fillLight = new THREE.DirectionalLight(0xffeebb, 0.4);
         fillLight.position.set(-10, -10, -5);
         this.scene.add(fillLight);
-        const hemiLight = new THREE.HemisphereLight(0xffeebb, 0x1a1a2e, 0.5);
+        const hemiLight = new THREE.HemisphereLight(0xffeebb, 0x1a1a2e, 0.4);
         this.scene.add(hemiLight);
         const pointLight = new THREE.PointLight(0xffa500, 0.8, 50);
         pointLight.position.set(0, 5, 0);
         this.scene.add(pointLight);
+
+        // Invisible ground plane that only catches shadows beneath each model.
+        const shadowMat = new THREE.ShadowMaterial({ opacity: 0.4 }); // higher = darker shadow
+        this.groundPlane = new THREE.Mesh(new THREE.PlaneGeometry(200, 200), shadowMat);
+        this.groundPlane.rotation.x = -Math.PI / 2;
+        this.groundPlane.position.y = -2.4; // just below the normalized model
+        this.groundPlane.receiveShadow = true;
+        this.scene.add(this.groundPlane);
     }
 
     setupControls() {
@@ -180,7 +197,7 @@ class CADViewer {
         // Distance needed so the displayed bounding sphere fits in the view.
         const fov = this.camera.fov * (Math.PI / 180);
         const radius = (displayedSize * Math.sqrt(3)) / 2; // half-diagonal of the cube
-        const distance = (radius / Math.sin(fov / 2)) * 1.25; // 1.25 = padding
+        const distance = (radius / Math.sin(fov / 2)) * 1.05; // 1.05 = more zoomed-in framing
 
         // Place camera on a nice 3/4 isometric-ish angle, then look at center.
         const dir = new THREE.Vector3(1, 0.8, 1).normalize();
