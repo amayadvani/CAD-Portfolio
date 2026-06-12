@@ -1,3 +1,9 @@
+// 3D CAD Viewer using Three.js - V7 (UMD fix)
+// Fixed: Use global THREE variable from script tag (UMD) for reliable loading on GitHub Pages
+// Features: per-model random colors, center-focused rotation, smart zoom, proper shading
+
+// THREE, OrbitControls, and STLLoader are loaded globally via script tags in index.html
+
 class CADViewer {
     constructor(container, colorSeed = null) {
         this.container = container;
@@ -76,7 +82,7 @@ class CADViewer {
         this.renderer.setSize(w, h);
     }
 
-    loadModel(modelPath, onComplete) {
+    loadModel(modelPath, onComplete, onError) {
         console.log('Loading model:', modelPath);
         if (this.currentModel) {
             this.scene.remove(this.currentModel);
@@ -89,16 +95,19 @@ class CADViewer {
             function (geometry) {
                 console.log('STL loaded via loader.load()');
                 console.log('Vertices:', geometry.attributes.position.count);
-                self.displayModel(geometry);
-                if (onComplete) onComplete();
+                var ok = self.displayModel(geometry);
+                if (ok === false) {
+                    if (onError) onError();
+                } else if (onComplete) {
+                    onComplete();
+                }
             },
             function (xhr) {
                 console.log('Loading progress:', Math.round((xhr.loaded / xhr.total) * 100) + '%');
             },
             function (error) {
                 console.error('Failed to load model:', modelPath, error);
-                self.showErrorPlaceholder();
-                if (onComplete) onComplete();
+                if (onError) onError();
             }
         );
     }
@@ -125,9 +134,8 @@ class CADViewer {
         const size = geometry.boundingBox.getSize(new THREE.Vector3());
         const maxDimension = Math.max(size.x, size.y, size.z);
         if (!isFinite(maxDimension) || maxDimension <= 0) {
-            console.warn('Model has invalid/zero size, showing placeholder');
-            this.showErrorPlaceholder();
-            return;
+            console.warn('Model has invalid/zero size, treating as unavailable');
+            return false;
         }
 
         // Every model is normalized to the SAME displayed size, regardless of
@@ -141,6 +149,7 @@ class CADViewer {
         this.currentModel = mesh;
         this.fitCameraToModel();
         console.log('Model displayed, color: #' + modelColor.toString(16));
+        return true;
     }
 
     getModelColor() {
@@ -187,18 +196,8 @@ class CADViewer {
         this.controls.update();
     }
 
-    showErrorPlaceholder() {
-        if (this.currentModel) this.scene.remove(this.currentModel);
-        const geometry = new THREE.BoxGeometry(2, 2, 2);
-        const material = new THREE.MeshPhongMaterial({ color: 0xff6b6b, wireframe: true });
-        const cube = new THREE.Mesh(geometry, material);
-        this.scene.add(cube);
-        this.currentModel = cube;
-        console.error('Error placeholder shown');
-    }
-
     animate() {
-        requestAnimationFrame(() => this.animate());
+        this._raf = requestAnimationFrame(() => this.animate());
         if (this.controls) this.controls.update();
         if (this.renderer && this.scene && this.camera) {
             this.renderer.render(this.scene, this.camera);
@@ -206,7 +205,13 @@ class CADViewer {
     }
 
     dispose() {
-        if (this.renderer) this.renderer.dispose();
+        if (this._raf) cancelAnimationFrame(this._raf);
         if (this.controls) this.controls.dispose();
+        if (this.renderer) {
+            this.renderer.dispose();
+            if (this.renderer.domElement && this.renderer.domElement.parentNode) {
+                this.renderer.domElement.parentNode.removeChild(this.renderer.domElement);
+            }
+        }
     }
 }
