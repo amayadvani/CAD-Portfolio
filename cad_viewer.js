@@ -121,19 +121,32 @@ class CADViewer {
         const mesh = new THREE.Mesh(geometry, material);
         mesh.castShadow = true;
         mesh.receiveShadow = true;
+
+        // Center the geometry at the origin so rotation pivots around its center
         geometry.computeBoundingBox();
         const center = geometry.boundingBox.getCenter(new THREE.Vector3());
         geometry.translate(-center.x, -center.y, -center.z);
+
+        // Guard against bad/empty geometry (avoids NaN scale -> invisible model)
         const size = geometry.boundingBox.getSize(new THREE.Vector3());
         const maxDimension = Math.max(size.x, size.y, size.z);
-        this.modelBounds = maxDimension;
-        const targetSize = 4;
-        const scale = targetSize / maxDimension;
+        if (!isFinite(maxDimension) || maxDimension <= 0) {
+            console.warn('Model has invalid/zero size, showing placeholder');
+            this.showErrorPlaceholder();
+            return;
+        }
+
+        // Every model is normalized to the SAME displayed size, regardless of
+        // its real-world STL dimensions. This is the displayed half-extent the
+        // camera framing relies on.
+        this.displayedSize = 4; // displayed bounding-cube edge length in scene units
+        const scale = this.displayedSize / maxDimension;
         mesh.scale.setScalar(scale);
+
         this.scene.add(mesh);
         this.currentModel = mesh;
         this.fitCameraToModel();
-        console.log('Model displayed, color: #' + modelColor.getHexString());
+        console.log('Model displayed, color: #' + modelColor.toString(16));
     }
 
     getModelColor() {
@@ -143,10 +156,9 @@ class CADViewer {
             0x27ae60, 0x8e44ad, 0xc0392b, 0x7f8c8d
         ];
         let index = 0;
-        if (this.colorSeed !== null) {
-            index = this.colorSeed % palette.length;
-        } else if (this.modelBounds) {
-            index = Math.floor(this.modelBounds * 17) % palette.length;
+        if (this.colorSeed !== null && this.colorSeed !== undefined) {
+            // Deterministic, stable color per card based on its seed.
+            index = Math.abs(this.colorSeed) % palette.length;
         } else {
             index = Math.floor(Math.random() * palette.length);
         }
@@ -154,15 +166,30 @@ class CADViewer {
     }
 
     fitCameraToModel() {
-        if (!this.currentModel || !this.modelBounds) return;
+        if (!this.currentModel) return;
+
+        // The model is always normalized to `displayedSize` (default 4) and
+        // centered at the origin. So we frame the camera off that FIXED displayed
+        // size -- NOT the raw STL dimensions. This keeps every model the same
+        // on-screen size and perfectly centered, no matter its real-world scale.
+        const displayedSize = this.displayedSize || 4;
+
+        // Always orbit around the model's center.
         this.controls.target.set(0, 0, 0);
+
+        // Distance needed so the displayed bounding sphere fits in the view.
         const fov = this.camera.fov * (Math.PI / 180);
-        const scale = this.modelBounds / 4;
-        const distance = (scale * 2) / (2 * Math.tan(fov / 2)) * 1.5;
-        this.camera.position.set(distance, distance, distance);
+        const radius = (displayedSize * Math.sqrt(3)) / 2; // half-diagonal of the cube
+        const distance = (radius / Math.sin(fov / 2)) * 1.25; // 1.25 = padding
+
+        // Place camera on a nice 3/4 isometric-ish angle, then look at center.
+        const dir = new THREE.Vector3(1, 0.8, 1).normalize();
+        this.camera.position.copy(dir.multiplyScalar(distance));
         this.camera.lookAt(0, 0, 0);
-        this.controls.maxDistance = distance * 2.5;
-        this.controls.minDistance = distance * 0.3;
+
+        // Sensible zoom limits relative to the framed distance.
+        this.controls.maxDistance = distance * 3;
+        this.controls.minDistance = distance * 0.4;
         this.controls.update();
     }
 

@@ -28,7 +28,7 @@ function createGrid() {
         container.appendChild(card);
         console.log('Card created for:', model.name);
         try {
-            var viewer = new CADViewer(viewerContainer);
+            var viewer = new CADViewer(viewerContainer, model.id);
             viewer.loadModel(model.stlPath, function() {
                 setTimeout(function() { hint.style.opacity = '0'; }, 4000);
             });
