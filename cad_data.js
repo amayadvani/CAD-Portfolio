@@ -5,15 +5,15 @@
 const cadModels = [
   {
     id: 1,
-    name: "Angled Claw V1",
-    stlPath: "cad_data/Angled_Claw_V1_1.stl",
+    name: "Angled Claw V1 Assembly",
+    stlPath: "cad_data/Angled Claw V1 (2).stl",
     description: "An angled claw mechanism designed for precision gripping operations."
   },
   {
     id: 2,
-    name: "Cone Guider V1",
-    stlPath: "cad_data/Cone_Guider_V1.stl",
-    description: "A cone-shaped guiding component for directing parts along a specific path."
+    name: "Horizontal Claw with Range Sensor Assembly",
+    stlPath: "cad_data/Horizontal Claw with Range Sensor (2).stl",
+    description: "A horizontal claw assembly integrated with a range sensor for autonomous operation."
   },
   {
     id: 3,
@@ -23,9 +23,9 @@ const cadModels = [
   },
   {
     id: 4,
-    name: "Horizontal Claw with Range Sensor",
-    stlPath: "cad_data/Horizontal_Claw_with_Range_Sensor.stl",
-    description: "A horizontal claw assembly integrated with a range sensor for autonomous operation."
+    name: "Cone Guider V1",
+    stlPath: "cad_data/Cone_Guider_V1.stl",
+    description: "A cone-shaped guiding component designed for directing parts along a specific path."
   },
   {
     id: 5,
@@ -47,22 +47,23 @@ const cadModels = [
   },
   {
     id: 8,
+    name: "Pole Guider VFinal",
+    stlPath: "cad_data/Pole_Guider_VFinal.stl",
+    description: "Final version of pole guider with refined tolerances for smooth operation."
+  },
+  {
+    id: 9,
     name: "Outside Gusset V1",
     stlPath: "cad_data/Outside_Gusset_V1.stl",
     description: "External gusset reinforcement for lateral stability in structural assemblies."
   },
   {
-    id: 9,
+    id: 10,
     name: "Outside Gusset VFinal",
     stlPath: "cad_data/Outside_Gusset_VFinal.stl",
     description: "Final iteration of external gusset design with optimized material placement."
   },
-  {
-    id: 10,
-    name: "Pole Guider VFinal",
-    stlPath: "cad_data/Pole_Guider_VFinal.stl",
-    description: "Final version of pole guider with refined tolerances for smooth operation."
-  },
+  
   {
     id: 11,
     name: "Pulley Driver",
