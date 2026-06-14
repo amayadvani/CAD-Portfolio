@@ -6,13 +6,13 @@ const cadModels = [
   {
     id: 1,
     name: "Angled Claw V1 Assembly",
-    stlPath: "cad_data/Angled Claw V1 (2).stl",
+    stlPath: "cad_data/Angled_Claw_V1_1.stl",
     description: "An angled claw mechanism designed for precision gripping operations."
   },
   {
     id: 2,
     name: "Horizontal Claw with Range Sensor Assembly",
-    stlPath: "cad_data/Horizontal Claw with Range Sensor (2).stl",
+    stlPath: "cad_data/Horizontal_Claw_with_Range_Sensor.stl",
     description: "A horizontal claw assembly integrated with a range sensor for autonomous operation."
   },
   {
