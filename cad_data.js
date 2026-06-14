@@ -13,7 +13,7 @@ const cadModels = [
     id: 2,
     name: "Horizontal Claw with Range Sensor Assembly",
     stlPath: "cad_data/Horizontal_Claw_with_Range_Sensor.stl",
-    description: "A horizontal claw assembly integrated with a range sensor for autonomous operation."
+    description: "A servo powered horizontal claw assembly integrated with a range sensor for autonomous operation."
   },
   {
     id: 3,
