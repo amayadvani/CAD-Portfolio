@@ -17,19 +17,14 @@ const cadModels = [
   },
   {
     id: 3,
-    name: "Ergonomic Cone Guider",
+    name: "Ergonomic Cone Guider V3",
     stlPath: "cad_data/Ergonomic_Cone_Guider_1.stl",
     description: "An ergonomically designed cone guider optimized for improved part handling."
   },
-  {
-    id: 4,
-    name: "Cone Guider V1",
-    stlPath: "cad_data/Cone_Guider_V1.stl",
-    description: "A cone-shaped guiding component designed for directing parts along a specific path."
-  },
+  
   {
     id: 5,
-    name: "Inside Gusset VFinal",
+    name: "Inside Gusset V2",
     stlPath: "cad_data/Inside_Gusset_VFinal.stl",
     description: "Internal gusset structure providing reinforcement to load-bearing areas."
   },
@@ -46,14 +41,20 @@ const cadModels = [
     description: "Final iteration of external gusset design with optimized material placement."
   },
   {
+    id: 4,
+    name: "Cone Guider V1",
+    stlPath: "cad_data/Cone_Guider_V1.stl",
+    description: "A cone-shaped guiding component designed for directing parts along a specific path."
+  },
+  {
     id: 6,
-    name: "Legal Cone Guider VFinal",
+    name: "Cone Guider V2",
     stlPath: "cad_data/Legal_Guider_VFinal.stl",
     description: "A competition-legal guider design meeting all regulatory specifications."
   },
   {
     id: 7,
-    name: "Legal Pole Guider V1",
+    name: "Pole Guider V1",
     stlPath: "cad_data/Legal_Pole_Guider_V1.stl",
     description: "A pole-based guider design for linear motion guidance applications."
   },
