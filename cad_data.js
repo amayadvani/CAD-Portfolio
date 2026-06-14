@@ -21,7 +21,6 @@ const cadModels = [
     stlPath: "cad_data/Ergonomic_Cone_Guider_1.stl",
     description: "An ergonomically designed cone guider optimized for improved part handling."
   },
-  
   {
     id: 5,
     name: "Inside Gusset V2",
