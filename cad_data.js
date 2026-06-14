@@ -34,8 +34,20 @@ const cadModels = [
     description: "Internal gusset structure providing reinforcement to load-bearing areas."
   },
   {
+    id: 9,
+    name: "Outside Gusset V1",
+    stlPath: "cad_data/Outside_Gusset_V1.stl",
+    description: "External gusset reinforcement for lateral stability in structural assemblies."
+  },
+  {
+    id: 10,
+    name: "Outside Gusset VFinal",
+    stlPath: "cad_data/Outside_Gusset_VFinal.stl",
+    description: "Final iteration of external gusset design with optimized material placement."
+  },
+  {
     id: 6,
-    name: "Legal Guider VFinal",
+    name: "Legal Cone Guider VFinal",
     stlPath: "cad_data/Legal_Guider_VFinal.stl",
     description: "A competition-legal guider design meeting all regulatory specifications."
   },
@@ -51,19 +63,6 @@ const cadModels = [
     stlPath: "cad_data/Pole_Guider_VFinal.stl",
     description: "Final version of pole guider with refined tolerances for smooth operation."
   },
-  {
-    id: 9,
-    name: "Outside Gusset V1",
-    stlPath: "cad_data/Outside_Gusset_V1.stl",
-    description: "External gusset reinforcement for lateral stability in structural assemblies."
-  },
-  {
-    id: 10,
-    name: "Outside Gusset VFinal",
-    stlPath: "cad_data/Outside_Gusset_VFinal.stl",
-    description: "Final iteration of external gusset design with optimized material placement."
-  },
-  
   {
     id: 11,
     name: "Pulley Driver",
