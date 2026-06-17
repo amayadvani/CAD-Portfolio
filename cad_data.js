@@ -12,7 +12,7 @@ const cadModels = [
   }
     ,{
     id: 7,
-    name: "V4 Bar Assembly",
+    name: "V4 Bar Double Servo Assembly",
     stlPath: "cad_data/V4_Bar_Assembly.stl",
     description: "Four-bar linkage assembly with servo actuation."
   },
