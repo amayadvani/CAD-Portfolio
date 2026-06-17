@@ -7,7 +7,7 @@ const cadModels = [
   {
     id: 13,
     name: "V4 Bar Design with Motor",
-    stlPath: "cad_data/V4_Bar_Design_with_Motor.stl",
+    stlPath: "cad_data/V4 BAR design with motor.stl",
     description: "V4 bar assembly integrated with a motor to optimize battery power and open up more servos to be used in throughout other designs."
   }
     ,{
