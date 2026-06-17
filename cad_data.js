@@ -3,6 +3,13 @@
 // Files are in the cad_data/ folder
 
 const cadModels = [
+    ,
+  {
+    id: 13,
+    name: "V4 Bar Design with Motor",
+    stlPath: "cad_data/V4_Bar_Design_with_Motor.stl",
+    description: "V4 bar assembly integrated with a motor to optimize battery power and open up more servos to be used in throughout other designs."
+  }
     ,{
     id: 7,
     name: "V4 Bar Assembly",
