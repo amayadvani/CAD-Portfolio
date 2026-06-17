@@ -4,7 +4,7 @@
 
 const cadModels = [
     ,{
-    id: 13,
+    id: 7,
     name: "V4 Bar Assembly",
     stlPath: "cad_data/V4_Bar_Assembly.stl",
     description: "Four-bar linkage assembly with servo actuation."
@@ -56,12 +56,6 @@ const cadModels = [
     name: "Cone Guider V2",
     stlPath: "cad_data/Legal_Guider_VFinal.stl",
     description: "A competition-legal guider design meeting all regulatory specifications."
-  },
-  {
-    id: 7,
-    name: "Pole Guider V1",
-    stlPath: "cad_data/Legal_Pole_Guider_V1.stl",
-    description: "A pole-based guider design for linear motion guidance applications."
   },
   {
     id: 8,
