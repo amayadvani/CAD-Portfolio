@@ -4,13 +4,19 @@
 
 const cadModels = [
     ,
+    {
+    id: 11,
+    name: "Custom Drivetrain Left Pod Assembly",
+    stlPath: "cad_data/Custom Drivetrain Left Pod Assembly.stl",
+    description: "Lowered polygons from 3 million to 0.5 million for github upload"
+  },
   {
     id: 13,
     name: "V4 Bar Single Motor Design",
     stlPath: "cad_data/V4 BAR design with motor.stl",
     description: "V4 bar assembly integrated with a motor to optimize battery power and open up more servos to be used in throughout other designs."
-  }
-    ,{
+  },
+  {
     id: 7,
     name: "V4 Bar Double Servo Assembly",
     stlPath: "cad_data/V4_Bar_Assembly.stl",
