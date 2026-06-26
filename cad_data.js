@@ -7,8 +7,8 @@ const cadModels = [
     {
     id: 11,
     name: "Custom Drivetrain Left Pod Assembly",
-    stlPath: "cad_data/Custom Drivetrain Left Pod Assembly.stl",
-    description: "Lowered polygons from 3 million to 0.5 million for github upload"
+    stlPath: "cad_data/Drive Pod Left (1).stl.nanodlp-simplified.stl",
+    description: "Lowered polygons from 3 million to below 0.25 million for github upload"
   },
   {
     id: 13,
