@@ -6,7 +6,7 @@ const cadModels = [
     ,
     {
     id: 7,
-    name: "Autonomous-Pan-Tilt-Tracking-System-Assembly",
+    name: "Autonomous Pan-Tilt Tracking Arudino Project",
     stlPath: "cad_data/Autonomous-Pan-Tilt-Tracking-System-Assembly.stl",
     description: "Satellite signal strength simulation data collection analysis, design, and Fabrication"
   },
