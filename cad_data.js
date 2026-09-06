@@ -5,7 +5,7 @@
 const cadModels = [
     ,
     {
-    id: 11,
+    id: 7,
     name: "Autonomous-Pan-Tilt-Tracking-System-Assembly",
     stlPath: "cad_data/Autonomous-Pan-Tilt-Tracking-System-Assembly.stl",
     description: "Satellite signal strength simulation data collection analysis, design, and Fabrication"
@@ -17,7 +17,7 @@ const cadModels = [
     description: "V4 bar assembly integrated with bevel gear to optimize battery power and open up more servos to be used in throughout other designs."
   },
   {
-    id: 7,
+    id: 11,
     name: "V4 Bar Double Servo Assembly",
     stlPath: "cad_data/V4_Bar_Assembly_CORRECTED.stl",
     description: "Four-bar linkage assembly with servo actuation."
