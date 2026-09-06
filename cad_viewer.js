@@ -64,7 +64,7 @@ class CADViewer {
         this.scene.add(pointLight);
 
         // Invisible ground plane that only catches shadows beneath each model.
-        const shadowMat = new THREE.ShadowMaterial({ opacity: 0.4 }); // higher = darker shadow
+        const shadowMat = new THREE.ShadowMaterial({ opacity: 0.18 }); // higher = darker shadow
         this.groundPlane = new THREE.Mesh(new THREE.PlaneGeometry(200, 200), shadowMat);
         this.groundPlane.rotation.x = -Math.PI / 2;
         this.groundPlane.position.y = -2.4; // just below the normalized model
@@ -83,7 +83,7 @@ class CADViewer {
         this.controls.maxDistance = 50;
         this.controls.minDistance = 1;
         this.controls.target.set(0, 0, 0);
-    }
+    
 
     setupResize() {
         window.addEventListener('viewerResize', () => this.onWindowResize());
@@ -197,7 +197,7 @@ class CADViewer {
         // Distance needed so the displayed bounding sphere fits in the view.
         const fov = this.camera.fov * (Math.PI / 180);
         const radius = (displayedSize * Math.sqrt(3)) / 2; // half-diagonal of the cube
-        const distance = (radius / Math.sin(fov / 2)) * 0.9; // 1.05 = more zoomed-in framing
+        const distance = (radius / Math.sin(fov / 2)) * 0.7; // 1.05 = more zoomed-in framing
 
         // Place camera on a nice 3/4 isometric-ish angle, then look at center.
         const dir = new THREE.Vector3(1, 0.8, 1).normalize();
