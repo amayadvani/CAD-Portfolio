@@ -83,7 +83,7 @@ class CADViewer {
         this.controls.maxDistance = 50;
         this.controls.minDistance = 1;
         this.controls.target.set(0, 0, 0);
-    
+    }
 
     setupResize() {
         window.addEventListener('viewerResize', () => this.onWindowResize());
