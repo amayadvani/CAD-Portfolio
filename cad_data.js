@@ -1,7 +1,3 @@
-// CAD Portfolio Data
-// Use relative paths so STL files load from GitHub Pages
-// Files are in the cad_data/ folder
-
 const cadModels = [
     ,
     {
