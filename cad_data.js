@@ -10,6 +10,41 @@ const cadModels = [
     stlPath: "cad_data/Autonomous-Pan-Tilt-Tracking-System-Assembly.stl",
     description: "Satellite signal strength simulation data collection analysis, design, and Fabrication"
   },
+    {
+    id: 1,
+    name: "Motor Mount",
+    stlPath: "cad_data/83,93_reduced_motor_mount (1).stl"
+  },
+  {
+    id: 2,
+    name: "Sensor Mount",
+    stlPath: "cad_data/Assembly 2 (3).stl"
+  },
+  {
+    id: 3,
+    name: "Half Gear for 180 Degree Rotation",
+    stlPath: "cad_data/gear.stl"
+  },
+  {
+    id: 4,
+    name: "Turn Table Driver (Motor Gear)",
+    stlPath: "cad_data/motor gear vfinal.stl"
+  },
+  {
+    id: 5,
+    name: "Servo Gusset Connecting 2 Axes",
+    stlPath: "cad_data/servogusset vfinal.stl"
+  },
+  {
+    id: 6,
+    name: "Turntable",
+    stlPath: "cad_data/turhtable.stl"
+  },
+  {
+    id: 12,
+    name: "Turntable Base",
+    stlPath: "cad_data/turntable base.stl"
+  },
   {
     id: 13,
     name: "V4 Bar Single Motor Design",
