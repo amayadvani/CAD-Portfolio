@@ -6,6 +6,30 @@ function createGrid() {
         container.innerHTML = '<div class="cad-card"><div class="card-info"><h3>Error</h3><p>cadModels not loaded</p></div></div>';
         return;
     }
+
+    var observer = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+            if (entry.isIntersecting) {
+                var viewerContainer = entry.target;
+                var model = viewerContainer._model;
+                var hint = viewerContainer._hint;
+
+                if (!viewerContainer._loaded) {
+                    viewerContainer._loaded = true;
+                    try {
+                        var viewer = new CADViewer(viewerContainer, model.id);
+                        viewer.loadModel(model.stlPath, function() {
+                            setTimeout(function() { hint.style.opacity = '0'; }, 4000);
+                        });
+                    } catch (e) {
+                        console.error('Viewer error:', model.name, e);
+                    }
+                }
+                observer.unobserve(viewerContainer);
+            }
+        });
+    }, { rootMargin: '200px' });
+
     cadModels.forEach(function(model) {
         var card = document.createElement('div');
         card.className = 'cad-card';
@@ -26,15 +50,12 @@ function createGrid() {
         card.appendChild(viewerWrapper);
         card.appendChild(info);
         container.appendChild(card);
+
+        viewerContainer._model = model;
+        viewerContainer._hint = hint;
+        observer.observe(viewerContainer);
+
         console.log('Card created for:', model.name);
-        try {
-            var viewer = new CADViewer(viewerContainer, model.id);
-            viewer.loadModel(model.stlPath, function() {
-                setTimeout(function() { hint.style.opacity = '0'; }, 4000);
-            });
-        } catch (e) {
-            console.error('Viewer error:', model.name, e);
-        }
     });
     console.log('Total cards:', container.children.length);
 }
